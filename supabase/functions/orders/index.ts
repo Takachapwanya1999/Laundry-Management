@@ -2,12 +2,12 @@ import '../types.d.ts';
 // deno-lint-ignore-file no-explicit-any
 import 'https://esm.sh/@supabase/functions-js@2.4.1/src/deno/shim.ts';
 import { serve } from 'https://deno.land/std@0.177.0/http/server.ts';
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'; 
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';  
 
 const cors = {
   'Access-Control-Allow-Origin': '*',  
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', 
 };
 
 serve(async (req) => {
