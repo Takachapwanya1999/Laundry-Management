@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import type { Branch } from './BranchTypes';
+import type { Branch } from './BranchTypes.ts';
 
 export type BranchContextType = {
   branch: Branch;

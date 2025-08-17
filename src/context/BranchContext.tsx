@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import type { Branch } from './BranchTypes';
+import type { Branch } from './BranchTypes.ts';
 import { BranchContext } from './BranchContextInternal';
 
 export const BranchProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {

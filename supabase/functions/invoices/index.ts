@@ -1,3 +1,4 @@
+import '../types.d.ts';
 // deno-lint-ignore-file no-explicit-any
 import 'https://esm.sh/@supabase/functions-js@2.4.1/src/deno/shim.ts';
 import { serve } from 'https://deno.land/std@0.177.0/http/server.ts';
