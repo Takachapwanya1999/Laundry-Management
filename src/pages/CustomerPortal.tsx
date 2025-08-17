@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography, Card, CardContent, CardHeader, Container, Grid, Avatar } from "@mui/material";
+import { Typography, Card, CardContent, CardHeader, Container, Avatar, Box } from "@mui/material";
 import { Person } from '@mui/icons-material';
 
 const fakeActions = [
@@ -15,9 +15,9 @@ const CustomerPortal: React.FC = () => (
 		<Typography color="text.secondary" sx={{ mb: 4, fontSize: 18 }}>
 			Welcome to your laundry portal. Manage your orders, invoices, and profile with ease.
 		</Typography>
-		<Grid container spacing={4}>
+		<Box display="grid" gap={4} gridTemplateColumns={{ xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(4, 1fr)' }}>
 			{fakeActions.map((action, idx) => (
-				<Grid item xs={12} sm={6} md={3} key={idx}>
+				<Box key={idx}>
 					<Card elevation={6} sx={{ borderRadius: 3, boxShadow: 3 }}>
 						<CardHeader
 							avatar={
@@ -33,9 +33,9 @@ const CustomerPortal: React.FC = () => (
 							</Typography>
 						</CardContent>
 					</Card>
-				</Grid>
+				</Box>
 			))}
-		</Grid>
+		</Box>
 	</Container>
 );
 export default CustomerPortal;

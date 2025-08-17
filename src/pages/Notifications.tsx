@@ -1,6 +1,5 @@
 import React from 'react';
-import { Typography, Card, CardContent, CardHeader, Container, Avatar } from "@mui/material";
-import Grid from "@mui/material/Grid";
+import { Typography, Card, CardContent, CardHeader, Container, Avatar, Box } from "@mui/material";
 import { Notifications as NotificationsIcon } from '@mui/icons-material';
 
 const fakeNotifications = [
@@ -16,9 +15,9 @@ const Notifications: React.FC = () => (
 		<Typography color="text.secondary" sx={{ mb: 4, fontSize: 18 }}>
 			Stay updated with the latest notifications from Laundry Management.
 		</Typography>
-		<Grid container spacing={4}>
+		<Box display="grid" gap={4} gridTemplateColumns={{ xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }}>
 			{fakeNotifications.map((note, idx) => (	
-				<Grid key={idx} item xs={12} sm={6} md={4}>
+				<Box key={idx}>
 					<Card elevation={6} sx={{ borderRadius: 3, boxShadow: 3 }}>
 						<CardHeader
 							avatar={
@@ -34,9 +33,9 @@ const Notifications: React.FC = () => (
 							</Typography>
 						</CardContent>
 					</Card>
-				</Grid>
+				</Box>
 			))}
-		</Grid>
+		</Box>
 	</Container>
 );
 export default Notifications;

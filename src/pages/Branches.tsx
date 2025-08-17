@@ -1,6 +1,5 @@
 import React from 'react';
-import { Typography, Card, CardContent, CardHeader, Container, Avatar } from "@mui/material";
-import { Grid } from "@mui/material";
+import { Typography, Card, CardContent, CardHeader, Container, Avatar, Box } from "@mui/material";
 import { Store } from '@mui/icons-material';
 
 const fakeBranches = [
@@ -15,9 +14,9 @@ const Branches: React.FC = () => (
 			<Typography color="text.secondary" sx={{ mb: 4, fontSize: 18 }}>
 				Explore our laundry branches and meet their managers.
 			</Typography>
-			<Grid container spacing={4}>
+			<Box display="grid" gap={4} gridTemplateColumns={{ xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }}>
 				{fakeBranches.map((branch) => (
-					<Grid key={branch.id} item xs={12} sm={6} md={4}>
+					<Box key={branch.id}>
 						<Card elevation={8} sx={{ borderRadius: 4, boxShadow: 6, transition: 'transform 0.2s', '&:hover': { transform: 'scale(1.03)', boxShadow: 12 }, background: 'linear-gradient(135deg, #e3f2fd 0%, #fff 100%)' }}>
 							<CardHeader
 								avatar={
@@ -34,9 +33,9 @@ const Branches: React.FC = () => (
 								</Typography>
 							</CardContent>
 						</Card>
-					</Grid>
+					</Box>
 				))}
-			</Grid>
+			</Box>
 		</Container>
 );
 export default Branches;

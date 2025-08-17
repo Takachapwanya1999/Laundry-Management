@@ -1,5 +1,5 @@
-import React, { useMemo, useState } from 'react';
-import { Box, Button, Stack, Tab, Tabs, Typography, Paper } from '@mui/material';
+import { useMemo } from 'react';
+import { Box, Button, Stack, Typography, Paper } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import type { GridColDef } from '@mui/x-data-grid';
 import { fetchInvoicesFromEdge } from '../utils/edge';
@@ -9,9 +9,8 @@ import jsPDF from 'jspdf';
 import Papa from 'papaparse';
 import { useQuery } from '@tanstack/react-query';
 
-const Billing = (): JSX.Element => {
+const Billing = () => {
 	const { branch } = useBranch();
-	const [tab, setTab] = useState(0);
 	const { data: invoices = [] } = useQuery({
 		queryKey: ['invoices', branch],
 		queryFn: async () => {

@@ -1,6 +1,5 @@
 import React from 'react';
-import { Typography, Card, CardContent, CardHeader, Avatar, Container } from "@mui/material";
-import { Grid } from "@mui/material";
+import { Typography, Card, CardContent, CardHeader, Avatar, Container, Box } from "@mui/material";
 import { deepPurple, blue, green } from "@mui/material/colors";
 
 const fakeStaff = [
@@ -21,9 +20,9 @@ const Staff: React.FC = () => (
 		<Typography color="text.secondary" sx={{ mb: 4, fontSize: 18 }}>
 			Meet our dedicated laundry staff members who make your experience seamless.
 		</Typography>
-		<Grid container spacing={4}>
+		<Box display="grid" gap={4} gridTemplateColumns={{ xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }}>
 			{fakeStaff.map((staff) => (
-			<Grid key={staff.id} item xs={12} sm={6} md={4}>
+			<Box key={staff.id}>
 					<Card elevation={6} sx={{ borderRadius: 3, boxShadow: 3 }}>
 						<CardHeader
 							avatar={
@@ -40,9 +39,9 @@ const Staff: React.FC = () => (
 							</Typography>
 						</CardContent>
 					</Card>
-				</Grid>
+				</Box>
 			))}
-		</Grid>
+		</Box>
 	</Container>
 );
 export default Staff;
