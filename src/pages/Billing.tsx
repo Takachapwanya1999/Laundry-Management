@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { Box, Button, Stack, Tab, Tabs, Typography } from '@mui/material';
+import { Box, Button, Stack, Tab, Tabs, Typography, Paper } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import type { GridColDef } from '@mui/x-data-grid';
 import { fetchInvoicesFromEdge } from '../utils/edge';
@@ -9,7 +9,7 @@ import jsPDF from 'jspdf';
 import Papa from 'papaparse';
 import { useQuery } from '@tanstack/react-query';
 
-const Billing: React.FC = () => {
+const Billing = (): JSX.Element => {
 	const { branch } = useBranch();
 	const [tab, setTab] = useState(0);
 	const { data: invoices = [] } = useQuery({
@@ -46,35 +46,28 @@ const Billing: React.FC = () => {
 	};
 
 	return (
-		<Box>
-			<Typography variant="h4" gutterBottom>Billing</Typography>
-			<Tabs value={tab} onChange={(_, v) => setTab(v)} sx={{ mb: 2 }}>
-				<Tab label="Invoices" />
-				<Tab label="Price Catalog" />
-			</Tabs>
-
-			{tab === 0 && (
-				<>
-					<Stack direction="row" spacing={1} sx={{ mb: 1 }}>
-						<Button size="small" onClick={exportCsv}>Export CSV</Button>
-						<Button size="small" variant="contained" onClick={exportPdf}>Export PDF</Button>
-					</Stack>
-					<div style={{ height: 560, width: '100%' }}>
-						<DataGrid
-							rows={invoices}
-							columns={invoiceCols}
-							pageSizeOptions={[10, 25, 50]}
-							initialState={{ pagination: { paginationModel: { pageSize: 10 } } }}
-						/>
-					</div>
-				</>
-			)}
-
-			{tab === 1 && (
-				<Typography color="text.secondary">Price Catalog coming from Supabase soon.</Typography>
-			)}
+		<Box sx={{ p: 3 }}>
+			<Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} alignItems="center" justifyContent="space-between" sx={{ mb: 3 }}>
+				<Typography variant="h3" fontWeight={700} color="primary.main">Billing</Typography>
+				<Stack direction="row" spacing={2}>
+					<Button size="medium" variant="outlined" onClick={exportCsv}>Export CSV</Button>
+					<Button size="medium" variant="contained" onClick={exportPdf}>Export PDF</Button>
+				</Stack>
+			</Stack>
+			<Box component={Paper} elevation={6} sx={{ p: 3, borderRadius: 3, boxShadow: 3 }}>
+				<div style={{ height: 560, width: '100%' }}>
+					<DataGrid
+						rows={invoices as InvoiceRow[]}
+						columns={invoiceCols}
+						pageSizeOptions={[10, 25, 50]}
+						initialState={{ pagination: { paginationModel: { pageSize: 10 } } }}
+						sx={{ background: 'white', borderRadius: 2 }}
+					/>
+				</div>
+			</Box>
 		</Box>
 	);
 };
 
 export default Billing;
+

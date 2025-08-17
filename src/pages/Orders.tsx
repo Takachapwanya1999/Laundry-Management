@@ -1,6 +1,7 @@
 
 import React, { useEffect, useMemo, useState } from 'react';
 import { Alert, Box, Button, CircularProgress, Drawer, Stack, TextField, Typography, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import Paper from '@mui/material/Paper';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -93,63 +94,66 @@ const Orders: React.FC = () => {
 			setRows((prev) => prev.map((r) => (ids.has(r.id) ? { ...r, status: 'Delivered' } : r)));
 		};
 
-	return (
-		<Box>
-			<Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
-				<Typography variant="h4">Orders</Typography>
+		return (
+			<Box sx={{ maxWidth: 1200, mx: 'auto', py: 4 }}>
+				<Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} alignItems="center" justifyContent="space-between" sx={{ mb: 3 }}>
+					<Typography variant="h3" fontWeight={700} color="primary.main">Orders</Typography>
 					<Stack direction="row" spacing={1}>
-						<TextField size="small" label="Search" value={search} onChange={(e) => setSearch(e.target.value)} />
-						<Button size="small" variant="outlined" onClick={() => setOpenCreateCustomer(true)}>Quick Create Customer</Button>
+						<TextField size="medium" label="Search" value={search} onChange={(e) => setSearch(e.target.value)} />
+						<Button size="medium" variant="outlined" onClick={() => setOpenCreateCustomer(true)}>Quick Create Customer</Button>
 					</Stack>
-			</Stack>
+				</Stack>
 
-			{isLoading && <CircularProgress />}
-			{error && <Alert severity="error">Failed to fetch orders.</Alert>}
+				{isLoading && <CircularProgress />}
+				{error && <Alert severity="error">Failed to fetch orders.</Alert>}
 
-					{!isLoading && !error && (
-				<div style={{ height: 560, width: '100%' }}>
-													<Stack direction="row" spacing={1} sx={{ mb: 1 }}>
-														<Button size="small" variant="outlined" disabled={selectionIds.length === 0} onClick={onBulkReady}>Mark Ready</Button>
-														<Button size="small" variant="contained" disabled={selectionIds.length === 0} onClick={onBulkDelivered}>Mark Delivered</Button>
-							</Stack>
-					<DataGrid
-								rows={filteredRows}
-						columns={columns}
-						checkboxSelection
-						pageSizeOptions={[10, 25, 50]}
-						initialState={{ pagination: { paginationModel: { pageSize: 10 } } }}
-						onRowDoubleClick={(p) => setDrawer({ open: true, row: p.row })}
-														onRowSelectionModelChange={(model: GridRowSelectionModel) => {
-															setSelectionIds(model as unknown as GridRowId[]);
-														}}
-								slots={{ toolbar: GridToolbar }}
-					/>
-				</div>
-			)}
-
-			<Drawer anchor="right" open={drawer.open} onClose={() => setDrawer({ open: false })}>
-				<Box sx={{ width: 360, p: 2 }}>
-					<Typography variant="h6" gutterBottom>Order Details</Typography>
-					{drawer.row && (
-						<Stack spacing={1}>
-							<Typography>ID: {drawer.row.id}</Typography>
-							<Typography>Title: {drawer.row.title}</Typography>
-							<Typography>Customer: {drawer.row.customer}</Typography>
-							<Typography>Branch: {drawer.row.branch}</Typography>
-							<Typography>Date: {drawer.row.createdAt}</Typography>
-							<Typography>Status: <StatusChip status={drawer.row.status} /></Typography>
-							<Typography variant="subtitle2" sx={{ mt: 2 }}>Items & Pricing</Typography>
-							<Typography color="text.secondary">3 x Wash & Fold @ $5.00, 1 x Dry Clean @ $8.00</Typography>
-							<Typography>Total: $23.00</Typography>
+				{!isLoading && !error && (
+					<Box component={Paper} elevation={6} sx={{ p: 3, borderRadius: 3, boxShadow: 3 }}>
+						<Stack direction="row" spacing={1} sx={{ mb: 1 }}>
+							<Button size="small" variant="outlined" disabled={selectionIds.length === 0} onClick={onBulkReady}>Mark Ready</Button>
+							<Button size="small" variant="contained" disabled={selectionIds.length === 0} onClick={onBulkDelivered}>Mark Delivered</Button>
 						</Stack>
-					)}
-				</Box>
-			</Drawer>
+						<div style={{ height: 560, width: '100%' }}>
+							<DataGrid
+								rows={filteredRows}
+								columns={columns}
+								checkboxSelection
+								pageSizeOptions={[10, 25, 50]}
+								initialState={{ pagination: { paginationModel: { pageSize: 10 } } }}
+								onRowDoubleClick={(p) => setDrawer({ open: true, row: p.row })}
+								onRowSelectionModelChange={(model: GridRowSelectionModel) => {
+									setSelectionIds(model as unknown as GridRowId[]);
+								}}
+								slots={{ toolbar: GridToolbar }}
+								sx={{ background: 'white', borderRadius: 2 }}
+							/>
+						</div>
+					</Box>
+				)}
 
-			{/* Quick Create Customer Dialog */}
-			<QuickCreateCustomerDialog open={openCreateCustomer} onClose={() => setOpenCreateCustomer(false)} />
-		</Box>
-	);
+				<Drawer anchor="right" open={drawer.open} onClose={() => setDrawer({ open: false })}>
+					<Box sx={{ width: 360, p: 2 }}>
+						<Typography variant="h6" gutterBottom>Order Details</Typography>
+						{drawer.row && (
+							<Stack spacing={1}>
+								<Typography>ID: {drawer.row.id}</Typography>
+								<Typography>Title: {drawer.row.title}</Typography>
+								<Typography>Customer: {drawer.row.customer}</Typography>
+								<Typography>Branch: {drawer.row.branch}</Typography>
+								<Typography>Date: {drawer.row.createdAt}</Typography>
+								<Typography>Status: <StatusChip status={drawer.row.status} /></Typography>
+								<Typography variant="subtitle2" sx={{ mt: 2 }}>Items & Pricing</Typography>
+								<Typography color="text.secondary">3 x Wash & Fold @ $5.00, 1 x Dry Clean @ $8.00</Typography>
+								<Typography>Total: $23.00</Typography>
+							</Stack>
+						)}
+					</Box>
+				</Drawer>
+
+				{/* Quick Create Customer Dialog */}
+				<QuickCreateCustomerDialog open={openCreateCustomer} onClose={() => setOpenCreateCustomer(false)} />
+			</Box>
+		);
 };
 
 export default Orders;
@@ -164,33 +168,31 @@ const createCustomerSchema = z.object({
 type CreateCustomerForm = z.infer<typeof createCustomerSchema>;
 
 function QuickCreateCustomerDialog({ open, onClose }: { open: boolean; onClose: () => void }) {
-	const { register, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm<CreateCustomerForm>({
-		resolver: zodResolver(createCustomerSchema),
-	});
+		const { register, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm<CreateCustomerForm>({
+			resolver: zodResolver(createCustomerSchema),
+		});
 
-	const onSubmit = async (data: CreateCustomerForm) => {
-		// Placeholder: integrate with backend later
-		console.log('Create customer', data);
-		reset();
-		onClose();
-	};
+		const onSubmit = async (data: CreateCustomerForm) => {
+			// Placeholder: integrate with backend later
+			console.log('Create customer', data);
+			reset();
+			onClose();
+		};
 
-	return (
-		<Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
-			<DialogTitle>Quick Create Customer</DialogTitle>
-			<form onSubmit={handleSubmit(onSubmit)}>
-				<DialogContent>
-					<Stack spacing={2}>
-						<TextField label="Name" {...register('name')} error={!!errors.name} helperText={errors.name?.message} />
-						<TextField label="Email" {...register('email')} error={!!errors.email} helperText={errors.email?.message} />
-						<TextField label="Phone" {...register('phone')} />
-					</Stack>
-				</DialogContent>
-				<DialogActions>
-					<Button onClick={onClose}>Cancel</Button>
-					<Button type="submit" variant="contained" disabled={isSubmitting}>Create</Button>
-				</DialogActions>
-			</form>
-		</Dialog>
-	);
+		return (
+			<Dialog open={open} onClose={onClose}>
+				<form onSubmit={handleSubmit(onSubmit)}>
+					<DialogTitle>Create Customer</DialogTitle>
+					<DialogContent>
+						<TextField {...register('name')} label="Name" fullWidth margin="normal" error={!!errors.name} helperText={errors.name?.message} />
+						<TextField {...register('email')} label="Email" fullWidth margin="normal" error={!!errors.email} helperText={errors.email?.message} />
+						<TextField {...register('phone')} label="Phone" fullWidth margin="normal" error={!!errors.phone} helperText={errors.phone?.message} />
+					</DialogContent>
+					<DialogActions>
+						<Button onClick={onClose}>Cancel</Button>
+						<Button type="submit" variant="contained" disabled={isSubmitting}>Create</Button>
+					</DialogActions>
+				</form>
+			</Dialog>
+		);
 }

@@ -1,3 +1,4 @@
+import Paper from '@mui/material/Paper';
 import React, { useMemo, useState } from 'react';
 import { Box, Chip, Stack, TextField, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
@@ -38,23 +39,26 @@ const Customers: React.FC = () => {
 		) },
 	], []);
 
-	return (
-		<Box>
-			<Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
-				<Typography variant="h4">Customers</Typography>
-				<TextField size="small" label="Search" value={search} onChange={(e) => setSearch(e.target.value)} />
-			</Stack>
-			<div style={{ height: 560, width: '100%' }}>
-				<DataGrid
-					rows={rows}
-					columns={columns}
-					pageSizeOptions={[10, 25, 50]}
-					initialState={{ pagination: { paginationModel: { pageSize: 10 } } }}
-					onRowDoubleClick={(p) => nav(`/customers/${p.row.id}`)}
-				/>
-			</div>
-		</Box>
-	);
+		return (
+			<Box sx={{ maxWidth: 1200, mx: 'auto', py: 4 }}>
+				<Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} alignItems="center" justifyContent="space-between" sx={{ mb: 3 }}>
+					<Typography variant="h3" fontWeight={700} color="primary.main">Customers</Typography>
+					<TextField size="medium" label="Search" value={search} onChange={(e) => setSearch(e.target.value)} />
+				</Stack>
+				<Box component={Paper} elevation={6} sx={{ p: 3, borderRadius: 3, boxShadow: 3 }}>
+					<div style={{ height: 560, width: '100%' }}>
+						<DataGrid
+							rows={rows}
+							columns={columns}
+							pageSizeOptions={[10, 25, 50]}
+							initialState={{ pagination: { paginationModel: { pageSize: 10 } } }}
+							onRowDoubleClick={(p) => nav(`/customers/${p.row.id}`)}
+							sx={{ background: 'white', borderRadius: 2 }}
+						/>
+					</div>
+				</Box>
+			</Box>
+		);
 };
 
 export default Customers;
